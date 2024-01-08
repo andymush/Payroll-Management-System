@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('attendance', function (Blueprint $table) {
-            $table->id('id');
-            $table->string('emp_code');
+            $table->increments('id');
+            $table->unsignedInteger('emp_id');
+            $table->foreign('emp_id')->references('emp_id')->on('employees')->onDelete('cascade')->onUpdate('cascade');
             $table->string('date');
             $table->string('time_in');
             $table->string('time_out')->nullable();

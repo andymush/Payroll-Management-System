@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payheads', function (Blueprint $table) {
-            $table->id('payhead_id');
+            $table->increments('payhead_id');
             $table->string('payhead_name');
             $table->string('payhead_description')->nullable();
             $table->string('payhead_type');

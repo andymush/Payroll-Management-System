@@ -18,9 +18,22 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
+        'type',
+        'phone',
+        'country',
+        'address',
+        'city',
+        'identification_number',
+        'identification_document',
+        'joining_date',
+        'photo',
+        'designation',
+        'bank_name',
+        'bank_account_number',
     ];
 
     /**
@@ -42,4 +55,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Get the user's type.
+     *
+     * @param  int  $value
+     * @return string
+     */
+    protected function type(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) =>  ["employee", "admin"][$value],
+        );
+    }
 }

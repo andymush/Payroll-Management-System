@@ -12,9 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('salaries', function (Blueprint $table) {
-            $table->id('salary_id');
+            $table->increments('salary_id');
             $table->string('emp_code');
-            $table->string('payhead_id');
+            //$table->foreignId('emp_code')->references('emp_code')->on('employees')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedInteger('payhead_id');
+            $table->foreign('payhead_id')->references('payhead_id')->on('payheads')->onDelete('cascade')->onUpdate('cascade');
             $table->decimal('amount', 8, 2);
             $table->string('pay_month');
             $table->decimal('earning_total', 8, 2);
