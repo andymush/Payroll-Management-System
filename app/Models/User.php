@@ -62,10 +62,15 @@ class User extends Authenticatable
      * @param  int  $value
      * @return string
      */
-    protected function type(): Attribute
+    // protected function type(): Attribute
+    // {
+    //     return new Attribute(
+    //         get: fn ($value) =>  ["employee", "admin"][$value],
+    //     );
+    // }
+
+    public function getTypeAttribute($value): string
     {
-        return new Attribute(
-            get: fn ($value) =>  ["employee", "admin"][$value],
-        );
+        return ["employee", "admin"][$value];
     }
 }
