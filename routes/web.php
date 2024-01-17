@@ -33,7 +33,7 @@ Route::get('/dashboard', function () {
 
 Route::get('/employee', function () {
     return Inertia::render('Employees/Dashboard');
-})->middleware(['auth', 'verified'])->name('employee');
+})->middleware(['auth', 'verified'])->name('employee.dashboard');
 
 
 Route::middleware('auth')->group(function () {

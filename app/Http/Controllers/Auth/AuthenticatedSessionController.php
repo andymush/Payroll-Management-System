@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
             $userType = auth()->user()->type;
     
             if ($userType == 'employee') {
-                return redirect()->route('employees.index');
+                return redirect()->route('employee.dashboard');
             } elseif ($userType == 'admin') { // Adjusted from 'client' to 'admin' based on the accessor logic
                 return redirect()->route('dashboard');
             }

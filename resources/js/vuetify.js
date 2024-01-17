@@ -1,151 +1,67 @@
-import { createVuetify } from 'vuetify'
-import { VBtn } from 'vuetify/components/VBtn'
-//import defaults from './defaults'
-import { icons } from './icons'
-import theme from './theme'
+// import { createVuetify } from 'vuetify'
+// import { VBtn } from 'vuetify/components/VBtn'
+// //import defaults from './defaults'
+// import { icons } from './icons'
+// import theme from './theme'
 
-// Styles
-//import '@core-scss/template/libs/vuetify/index.scss'
-import 'vuetify/styles'
+// import * as components from "vuetify/components";
+// import * as directives from "vuetify/directives";
+// // Styles
+// //import '@core-scss/template/libs/vuetify/index.scss'
+// import 'vuetify/styles'
 
-export default createVuetify({
-  aliases: {
-    IconBtn: VBtn,
-  },
-  defaults:
-    {
+// export default createVuetify({
+//   aliases: {
+//     IconBtn: VBtn,
+//   },
+  
+//     components,
+//     directives,
+// })
 
-        IconBtn: {
-            icon: true,
-            size: 'small',
-            color: 'default',
-            variant: 'text',
-            VIcon: {
-            size: 24,
-            },
-        },
-        VAlert: {
-            density: 'comfortable',
-            VBtn: {
-            color: undefined,
-            },
-        },
-        VAvatar: {
-            // ℹ️ Remove after next release
-            variant: 'flat',
-        },
-        VBadge: {
-            // set v-badge default color to primary
-            color: 'primary',
-        },
-        VBtn: {
-            // set v-btn default color to primary
-            color: 'primary',
-        },
-        VChip: {
-            elevation: 0,
-            density: 'comfortable',
-        },
-        VList: {
-            VListItem: {
-            color: 'primary',
-            },
-        },
-        VPagination: {
-            density: 'compact',
-        },
-        VTabs: {
-            // set v-tabs default color to primary
-            color: 'primary',
-            VSlideGroup: {
-            showArrows: true,
-            },
-        },
-        VTooltip: {
-            // set v-tooltip default location to top
-            location: 'top',
-        },
-        VCheckboxBtn: {
-            color: 'primary',
-        },
-        VCheckbox: {
-            // set v-checkbox default color to primary
-            color: 'primary',
-            density: 'comfortable',
-            hideDetails: 'auto',
-        },
-        VRadioGroup: {
-            color: 'primary',
-            density: 'comfortable',
-            hideDetails: 'auto',
-        },
-        VRadio: {
-            density: 'comfortable',
-            hideDetails: 'auto',
-        },
-        VSelect: {
-            variant: 'outlined',
-            color: 'primary',
-            hideDetails: 'auto',
-        },
-        VRangeSlider: {
-            // set v-range-slider default color to primary
-            thumbSize: 14,
-            color: 'primary',
-            density: 'comfortable',
-            thumbLabel: true,
-            hideDetails: 'auto',
-        },
-        VRating: {
-            // set v-rating default color to primary
-            color: 'rgba(var(--v-theme-on-background),0.22)',
-            activeColor: 'warning',
-        },
-        VProgressCircular: {
-            // set v-progress-circular default color to primary
-            color: 'primary',
-        },
-        VSlider: {
-            // set v-slider default color to primary
-            thumbSize: 14,
-            color: 'primary',
-            hideDetails: 'auto',
-        },
-        VTextField: {
-            variant: 'outlined',
-            color: 'primary',
-            hideDetails: 'auto',
-        },
-        VAutocomplete: {
-            variant: 'outlined',
-            color: 'primary',
-            hideDetails: 'auto',
-            VChip: {
-            density: 'default',
-            },
-        },
-        VCombobox: {
-            variant: 'outlined',
-            color: 'primary',
-            hideDetails: 'auto',
-        },
-        VFileInput: {
-            variant: 'outlined',
-            color: 'primary',
-            hideDetails: 'auto',
-        },
-        VTextarea: {
-            variant: 'outlined',
-            density: 'comfortable',
-            color: 'primary',
-            hideDetails: 'auto',
-        },
-        VSwitch: {
-            // set v-switch default color to primary
-            color: 'primary',
-            hideDetails: 'auto',
+// Vuetify
+import "vuetify/styles";
+import { createVuetify } from "vuetify";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
+
+const customeTheme = {
+    dark: true,
+    colors: {
+        primary: "#673AB7",
+        secondary: "#424242",
+        accent: "#82B1FF",
+        error: "#FF5252",
+        info: "#2196F3",
+        success: "#4CAF50",
+        warning: "#FFC107",
+        lightblue: "#14c6FF",
+        yellow: "#FFCF00",
+        pink: "#FF1976",
+        orange: "#FF8657",
+        magenta: "#C33AFC",
+        darkblue: "#1E2D56",
+        gray: "#909090",
+        neutralgray: "#9BA6C1",
+        green: "#2ED47A",
+        red: "#FF5c4E",
+        darkblueshade: "#308DC2",
+        lightgray: "#BDBDBD",
+        lightpink: "#FFCFE3",
+        white: "#FFFFFF",
+        muted: "#6c757d",
+    },
+};
+
+const vuetify = createVuetify({
+    components,
+    directives,
+    theme: {
+        defaultTheme: "customeTheme",
+        themes: {
+            customeTheme,
         },
     },
-  icons,
-  theme,
-})
+});
+
+export default vuetify;

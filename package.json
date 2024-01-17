@@ -6,10 +6,11 @@
         "build": "vite build && vite build --ssr"
     },
     "devDependencies": {
+        "@iconify/vue": "^4.1.1",
         "@inertiajs/vue3": "^1.0.0",
         "@popperjs/core": "^2.11.6",
         "@tailwindcss/forms": "^0.5.3",
-        "@vitejs/plugin-vue": "^4.5.0",
+        "@vitejs/plugin-vue": "^4.6.2",
         "@vue/server-renderer": "^3.2.31",
         "autoprefixer": "^10.4.12",
         "axios": "^1.1.2",
@@ -23,6 +24,7 @@
     },
     "dependencies": {
         "vue-axios": "^3.5.2",
-        "vue-router": "^4.2.5"
+        "vue-router": "^4.2.5",
+        "vuetify": "^3.4.10"
     }
 }
