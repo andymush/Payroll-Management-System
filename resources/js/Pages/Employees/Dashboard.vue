@@ -1,15 +1,81 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-
+import { defineProps, ref, onMounted } from 'vue';
+import axios from 'axios';
 
 let loading = false;
-  let selection = 1;
+let selection = 1;
 
-  const reserve = () => {
-    loading = true;
-    setTimeout(() => (loading = false), 2000);
-  };
+const reserve = () => {
+loading = true;
+setTimeout(() => (loading = false), 2000);
+};
+
+// defineProps(
+//     {
+//         employeeDetails: Array,
+//     }
+// )
+
+// const currentTime = ref(null);
+
+const getCurrentTime = () => {
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+
+  currentTime.value = `${hours}:${minutes}:${seconds}`;
+};
+
+onMounted(() => {
+  getCurrentTime();
+  setInterval(getCurrentTime, 1000);
+});
+
+
+
+// console.log(employeeDetails.employeeId);
+
+// const clockIn = () => {
+//     //will add a loading state
+//     console.log(employeeId);
+//     console.log('clock in');
+//     axios.post(route('attendance.store'), {
+//         employee_id: employeeId.value,
+//         current_date: currentDate.value,
+//         time_in: timeIn.value,
+//         time_out: timeOut.value,
+//     })
+//     .then((response) => {
+//         console.log(response);
+//     })
+//     .catch((error) => {
+//         console.log(error);
+//     });
+// };
+
+const props = defineProps(['employeeDetails']); 
+
+const currentTime = ref('');
+
+const clockIn = () => {
+    // will add a loading state
+    console.log('clock in');
+    axios.post(route('attendance.store'), {
+        employee_id: props.employeeDetails.employeeId,
+        current_date: props.employeeDetails.currentDate,
+        time_in: currentTime.value,
+    })
+    .then((response) => {
+        console.log(response);
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+};
+
 
 </script>
 
@@ -24,17 +90,18 @@ let loading = false;
                 <div class="dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                         <v-card
+                            
                             :loading="loading"
                             class="mx-auto my-12"
                             max-width="374"
                         >
                             <template v-slot:loader="{ isActive }">
-                            <v-progress-linear
-                                :active="isActive"
-                                color="deep-purple"
-                                height="4"
-                                indeterminate
-                            ></v-progress-linear>
+                                <v-progress-linear
+                                    :active="isActive"
+                                    color="deep-purple"
+                                    height="4"
+                                    indeterminate
+                                ></v-progress-linear>
                             </template>
                             <v-img
                                 height="50%"
@@ -50,46 +117,45 @@ let loading = false;
                                 </v-avatar>
                                 <v-list-item
                                     class="text-white"
-                                    title="Marcus Obrien"
-                                    subtitle="Network Engineer"
                                 >
+                                <v-title-content>
+                                    <v-list-item-title class="text-h6"> {{ $page.props.auth.user.first_name }} {{ $page.props.auth.user.last_name }}</v-list-item-title>
+                                    <v-list-item-subtitle class="font-weight-bold">{{ employeeDetails.department }} </v-list-item-subtitle>
+                                </v-title-content>
                             </v-list-item>
                             </v-img>
 
                             <v-card-item class="text-center">
-                                <!-- <v-card-title>                                            
-                                    {{ $page.props.auth.user.first_name }} {{ $page.props.auth.user.last_name }}
-                                
-                                </v-card-title>
-
-                                <v-card-subtitle class="mb-0">
-                                    <span class="">Department</span>
-                                    <v-icon
-                                    color="error"
-                                    icon="mdi-fire-circle"
-                                    size="small"
-                                    ></v-icon>
-                                </v-card-subtitle> -->
-
                                 <v-card-text class="text-center ">
                                     <!-- <div class="text-subtitle-1">
                                         Position : Front-end
                                     </div> -->
                                     <div>
-                                        Date of the week :
+                                        Date of the week 
+                                        <p class="font-weight-bold text-h6"> 
+                                            {{ employeeDetails.currentDate }}
+                                            <br>
+                                            <v-divider></v-divider>
+                                            {{ currentTime }}
+                                        </p>
                                     </div>
                                 </v-card-text>
                             </v-card-item>
                             <v-divider class="mx-4 mb-1"></v-divider>
 
-                            
-                                <v-btn 
-                                class="mb-4"
-                                block
-                                variant="flat"
-                                color="success"
+                                <v-form @submit.prevent="clockIn">
+                                    <input type="hidden" name="employeeId" :value= employeeDetails.employeeId >
+                                    <input type="hidden" name="currentDate" :value= employeeDetails.currentDate >
+                                    <input type="hidden" name="timeIn" :value= currentTime >
                                 
-                                >Clock-In</v-btn>
+                                    <v-btn 
+                                    class="mb-4"
+                                    block
+                                    variant="flat"
+                                    color="success"
+                                    type="submit"
+                                    >Clock-In</v-btn>
+                                </v-form>
 
                                 <v-btn 
                                 block

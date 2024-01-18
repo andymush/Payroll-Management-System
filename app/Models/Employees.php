@@ -19,4 +19,14 @@ class Employees extends Model
         'DeptId',
         'EmpCode',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'UserId');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Departments::class, 'DeptId');
+    }
 }

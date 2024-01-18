@@ -9,4 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Attendance extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $table = 'attendance';
+
+    protected $fillable = [
+        'emp_id',
+        'date',
+        'time_in',
+        'time_out',
+    ];
 }

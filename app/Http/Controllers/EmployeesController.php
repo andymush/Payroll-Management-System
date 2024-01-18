@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Employees;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
+use Illuminate\Support\Facades\Log;
+use App\Models\User;
+use App\Models\Departments;
+use DateTime;
 
 class EmployeesController extends Controller
 {
@@ -14,8 +17,32 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        $employees = Employees::all();
-        return Inertia::render('Employees/Index', ['employees' => $employees]);
+        $user = auth()->user()->id;
+
+        $employeeDetails = Employees::select('emp_id', 'DeptId')
+            ->where('UserId', $user)
+            ->with('department')
+            ->first();
+
+        $currentDate = date('l, jS, Y');
+
+        if ($employeeDetails) {
+            $employeeId = $employeeDetails->emp_id;
+            $employeeDept = $employeeDetails->department->dept_name;
+
+            $employeeDetailsArray = [
+                "employeeId" => $employeeId,
+                "department" => $employeeDept,
+                "currentDate" => $currentDate,
+            ];
+        } else {
+            Log::info("Employee not found for the authenticated user.");
+        }
+
+        return Inertia::render('Employees/Dashboard', [
+            'employeeDetails' => $employeeDetailsArray,
+        ]);
+
     }
 
     /**

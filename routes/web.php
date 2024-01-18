@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,9 +32,13 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/employee', function () {
-    return Inertia::render('Employees/Dashboard');
-})->middleware(['auth', 'verified'])->name('employee.dashboard');
+// Route::get('/employee', function () {
+//     return Inertia::render('Employees/Dashboard');
+// })->middleware(['auth', 'verified'])->name('employee.dashboard');
+
+
+Route::get('/employee', [EmployeesController::class, 'index'])->name('employee.dashboard');
+Route::resource('attendance', AttendanceController::class);
 
 
 Route::middleware('auth')->group(function () {

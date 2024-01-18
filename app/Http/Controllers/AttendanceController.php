@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 class AttendanceController extends Controller
 {
     /**
@@ -28,7 +28,16 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Log::info($request);
+
+        $attendance = Attendance::create([
+            'emp_id' => $request->employee_id,
+            'date' => $request->current_date,
+            'time_in' => $request->time_in,
+        ]);
+        $attendance->save();
+
+        return redirect()->back()->with('success', 'Attendance marked successfully.');
     }
 
     /**
