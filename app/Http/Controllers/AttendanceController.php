@@ -28,7 +28,7 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info($request);
+        //Log::info($request);
 
         $attendance = Attendance::create([
             'emp_id' => $request->employee_id,
@@ -61,7 +61,13 @@ class AttendanceController extends Controller
      */
     public function update(Request $request, Attendance $attendance)
     {
-        //
+        Log::info($request);
+        $attendance->time_out = $request->time_out;
+        $attendance->save();
+
+        // You may return a response if needed, for example:
+        return response()->json(['message' => 'Attendance updated successfully']);
+        
     }
 
     /**

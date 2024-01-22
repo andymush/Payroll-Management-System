@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { defineProps, ref, onMounted } from 'vue';
 import axios from 'axios';
 
@@ -56,8 +56,12 @@ onMounted(() => {
 //     });
 // };
 
-const props = defineProps(['employeeDetails']); 
-
+const props = defineProps([
+    'employeeDetails',
+    'attendance',
+    'attendanceId',
+    'clockedOut'
+]); 
 const currentTime = ref('');
 
 const clockIn = () => {
@@ -67,6 +71,20 @@ const clockIn = () => {
         employee_id: props.employeeDetails.employeeId,
         current_date: props.employeeDetails.currentDate,
         time_in: currentTime.value,
+    })
+    .then((response) => {
+        console.log(response);
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+};
+
+const clockOut = () => {
+    // will add a loading state
+    console.log('clock out');
+    axios.put(route('attendance.update', props.attendanceId), {
+        time_out: currentTime.value,
     })
     .then((response) => {
         console.log(response);
@@ -142,8 +160,12 @@ const clockIn = () => {
                                 </v-card-text>
                             </v-card-item>
                             <v-divider class="mx-4 mb-1"></v-divider>
-
-                                <v-form @submit.prevent="clockIn">
+                            <v-card-text class="text-center" v-if="clockedOut">
+                                <div class="text-h6 text-weight-bold">
+                                    Clocked Out at : {{ clockedOut }}
+                                </div>
+                            </v-card-text>  
+                                <v-form @submit.prevent="clockIn" v-if="attendance == 'Absent' ">
                                     <input type="hidden" name="employeeId" :value= employeeDetails.employeeId >
                                     <input type="hidden" name="currentDate" :value= employeeDetails.currentDate >
                                     <input type="hidden" name="timeIn" :value= currentTime >
@@ -157,12 +179,27 @@ const clockIn = () => {
                                     >Clock-In</v-btn>
                                 </v-form>
 
+                                <v-form @submit.prevent="clockOut" v-if="attendance == 'Present' ">
+                                    <input type="hidden" name="timeOut" :value= currentTime >
+                                
+                                    <v-btn 
+                                    class="mb-4"
+                                    block
+                                    variant="flat"
+                                    color="warning"
+                                    type="submit"
+                                    >Clock-Out</v-btn>
+                                </v-form>
+
                                 <v-btn 
                                 block
-                                variant="outlined"
+                                variant="elevated"
                                 color="error"
-                                
-                                >Cancel</v-btn>
+                                >
+                                <Link :href="route('logout')" method="post" as="button">
+                                    LOGOUT 
+                                </Link>
+                            </v-btn>
                         </v-card>
                     </div>
                 </div>

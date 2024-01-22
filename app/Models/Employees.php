@@ -29,4 +29,9 @@ class Employees extends Model
     {
         return $this->belongsTo(Departments::class, 'DeptId');
     }
+
+    public function attendance()
+    {
+        return $this->hasMany(Attendance::class, 'id');
+    }
 }
