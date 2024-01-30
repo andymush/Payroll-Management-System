@@ -1,8 +1,9 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
-import { defineProps, ref, onMounted } from 'vue';
+import { defineProps, ref, onMounted, onBeforeUnmount, watch} from 'vue';
 import axios from 'axios';
+import { reactive } from 'vue';
 
 let loading = false;
 let selection = 1;
@@ -20,6 +21,7 @@ setTimeout(() => (loading = false), 2000);
 
 // const currentTime = ref(null);
 
+const clockedIn = ref(false);
 const getCurrentTime = () => {
   const now = new Date();
   const hours = now.getHours().toString().padStart(2, '0');
@@ -32,29 +34,9 @@ const getCurrentTime = () => {
 onMounted(() => {
   getCurrentTime();
   setInterval(getCurrentTime, 1000);
+
 });
 
-
-
-// console.log(employeeDetails.employeeId);
-
-// const clockIn = () => {
-//     //will add a loading state
-//     console.log(employeeId);
-//     console.log('clock in');
-//     axios.post(route('attendance.store'), {
-//         employee_id: employeeId.value,
-//         current_date: currentDate.value,
-//         time_in: timeIn.value,
-//         time_out: timeOut.value,
-//     })
-//     .then((response) => {
-//         console.log(response);
-//     })
-//     .catch((error) => {
-//         console.log(error);
-//     });
-// };
 
 const props = defineProps([
     'employeeDetails',
@@ -62,18 +44,30 @@ const props = defineProps([
     'attendanceId',
     'clockedOut'
 ]); 
-const currentTime = ref('');
 
+
+const currentTime = ref('');
+const timeIn = ref('');
+const timeOut = ref('');
+
+const currentAttendance = ref(props.attendance);
+console.log(currentAttendance.value);
 const clockIn = () => {
     // will add a loading state
-    console.log('clock in');
+    console.log('clocked in');
+    clockedIn.value = false;
     axios.post(route('attendance.store'), {
         employee_id: props.employeeDetails.employeeId,
         current_date: props.employeeDetails.currentDate,
         time_in: currentTime.value,
     })
     .then((response) => {
-        console.log(response);
+        console.log(response.data.attendance);
+        currentAttendance.value = "Present";
+        console.log(response.data.attendance.time_in);
+        timeIn.value = response.data.attendance.time_in;
+        //hide the clock in button
+
     })
     .catch((error) => {
         console.log(error);
@@ -88,12 +82,16 @@ const clockOut = () => {
     })
     .then((response) => {
         console.log(response);
+        currentAttendance.value = "Clocked-Out";
+        console.log(timeIn.value);
+        timeOut.value = response.data.time_out;
+
     })
     .catch((error) => {
         console.log(error);
     });
 };
-
+console.log(currentAttendance.value);
 
 </script>
 
@@ -160,12 +158,13 @@ const clockOut = () => {
                                 </v-card-text>
                             </v-card-item>
                             <v-divider class="mx-4 mb-1"></v-divider>
-                            <v-card-text class="text-center" v-if="clockedOut">
+                            <v-card-text class="text-center" v-if="currentAttendance == 'Clocked-Out' ">
                                 <div class="text-h6 text-weight-bold">
-                                    Clocked Out at : {{ clockedOut }}
+                                    Clocked Out at : {{ clockedOut || timeOut }}
                                 </div>
                             </v-card-text>  
-                                <v-form @submit.prevent="clockIn" v-if="attendance == 'Absent' ">
+                            <div>
+                                <v-form @submit.prevent="clockIn" v-if="currentAttendance == 'Absent' || currentAttendance == 'Absent' ">
                                     <input type="hidden" name="employeeId" :value= employeeDetails.employeeId >
                                     <input type="hidden" name="currentDate" :value= employeeDetails.currentDate >
                                     <input type="hidden" name="timeIn" :value= currentTime >
@@ -176,10 +175,12 @@ const clockOut = () => {
                                     variant="flat"
                                     color="success"
                                     type="submit"
+                                    v-model = "clockedIn"
                                     >Clock-In</v-btn>
                                 </v-form>
-
-                                <v-form @submit.prevent="clockOut" v-if="attendance == 'Present' ">
+                            </div>
+                            <div >
+                                <v-form @submit.prevent="clockOut" v-if="currentAttendance == 'Present' ">
                                     <input type="hidden" name="timeOut" :value= currentTime >
                                 
                                     <v-btn 
@@ -190,7 +191,7 @@ const clockOut = () => {
                                     type="submit"
                                     >Clock-Out</v-btn>
                                 </v-form>
-
+                            </div>
                                 <v-btn 
                                 block
                                 variant="elevated"

@@ -74,6 +74,25 @@ class EmployeesController extends Controller
 
     }
 
+    public function attendance()
+    {
+        $user = auth()->user()->id;
+
+        $empId = Employees::select('emp_id')
+            ->where('UserId', $user)
+            ->first();
+        
+        Log::info($empId);
+        $employeeAttendance = Attendance::where('emp_id', $empId->emp_id)
+            ->select('date', 'time_in', 'time_out', 'hours_worked')
+            ->get();
+            
+            return Inertia::render('Employees/Attendance', [
+                'empId' => $empId,
+                'employeeAttendance' => $employeeAttendance,
+            ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
