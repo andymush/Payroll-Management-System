@@ -5,6 +5,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,9 +29,23 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::get('/employee', function () {
+//     return Inertia::render('Employees/Dashboard');
+// })->middleware(['auth', 'verified'])->name('employee.dashboard');
+
+// Route::get('/dashboard', [EmployeesController::class, 'index'])->name('dashboard');
+
+Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function(){
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+});
+
+Route::resource('attendance', AttendanceController::class);
+Route::get('/employee', [EmployeesController::class, 'index'])->name('employee.dashboard');
+Route::get('/employee/attendance', [EmployeesController::class, 'attendance'])->name('employee.attendance');
 
 
 Route::middleware('auth')->group(function () {

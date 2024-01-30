@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Log;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -33,6 +34,16 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        if (auth()->check()) {
+            $userType = auth()->user()->type;
+    
+            if ($userType == 'employee') {
+                return redirect()->route('employee.dashboard');
+            } elseif ($userType == 'admin') { // Adjusted from 'client' to 'admin' based on the accessor logic
+                return redirect()->route('dashboard');
+            }
+        }
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

@@ -15,7 +15,7 @@ const showingNavigationDropdown = ref(false);
     <div>
         <div class="mt-5 min-h-screen bg-gray-100 dark:bg-gray-900">
             
-            <nav class="fixed top-0 z-50 w-full border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 mb-2">
+            <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                 <div class="px-3 py-3 lg:px-5 lg:pl-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center justify-start rtl:justify-end">
@@ -31,7 +31,7 @@ const showingNavigationDropdown = ref(false);
                                     <span class="inline-flex rounded-md">
                                         <button
                                             type="button"
-                                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white dark:text-gray-400  dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
+                                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
                                         >
                                         <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
                                         &nbsp;
@@ -68,8 +68,8 @@ const showingNavigationDropdown = ref(false);
 
             <Sidebar/>
  
-            <div class="mt-5 pt-4 sm:ml-64">
-                <header class="dark:bg-gray-800 shadow" v-if="$slots.header">
+            <div class="mt-5 sm:ml-64">
+                <header class="bg-white dark:bg-gray-800 shadow" v-if="$slots.header">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         <slot name="header" />
                     </div>

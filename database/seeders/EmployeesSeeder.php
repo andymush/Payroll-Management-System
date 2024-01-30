@@ -13,6 +13,18 @@ class EmployeesSeeder extends Seeder
      */
     public function run(): void
     {
-        Employees::factory()->count(5)->create();
+        Employees::insert([
+            [
+                'UserId' => 2,
+                'DeptId' => '1',
+                'EmpCode' => 'EMP-0001'
+            ],
+            [
+                'UserId' => 3,
+                'DeptId' => '2',
+                'EmpCode' => 'EMP-0002'
+            ]
+        
+        ]);
     }
 }
