@@ -16,6 +16,11 @@ class AdminController extends Controller
         return Inertia::render('Dashboard');
     }
 
+    public function createEmployee()
+    {
+        return Inertia::render('Admin/CreateEmployee');
+    }
+
     /**
      * Show the form for creating a new resource.
      */

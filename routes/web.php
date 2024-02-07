@@ -41,6 +41,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function(){
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/create-employee', [AdminController::class, 'createEmployee'])->name('employees.add');
 });
 
 Route::resource('attendance', AttendanceController::class);
